@@ -17,6 +17,7 @@ class App extends Component {
     this.updatePost = this.updatePost.bind( this );
     this.deletePost = this.deletePost.bind( this );
     this.createPost = this.createPost.bind( this );
+    this.filterPosts = this.filterPosts.bind( this );
   }
   
   componentDidMount() {
@@ -47,12 +48,21 @@ class App extends Component {
       }).catch(error => {console.log(error)})
   }
 
+  filterPosts(text) {
+    const uri = `https://practiceapi.devmountain.com/api/posts/filter?text=${text}`
+    const encoded = encodeURI(uri)
+    axios.get(encoded).then(response => {
+      this.setState({ posts: response.data })
+    }).catch(error => {console.log(error)})
+  }
+
   render() {
     const { posts } = this.state;
     
     return (
       <div className="App__parent">
-        <Header />
+        <Header 
+        filterPostsFn={this.filterPosts}/>
 
         <section className="App__content">
 
